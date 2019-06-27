@@ -40,11 +40,11 @@ class TwoModels:
         self._policy_q_s_a = tf.placeholder(shape=[None, self._num_actions], dtype=tf.float32)
 
         # list of nn layers
-        fc1 = tf.layers.dense(self._policy_states, 400, activation=tf.nn.relu, name=self._policy_namescope)
-        fc2 = tf.layers.dense(fc1, 400, activation=tf.nn.relu, name=self._policy_namescope)
-        fc3 = tf.layers.dense(fc2, 400, activation=tf.nn.relu, name=self._policy_namescope)
-        fc4 = tf.layers.dense(fc3, 400, activation=tf.nn.relu, name=self._policy_namescope)
-        fc5 = tf.layers.dense(fc4, 400, activation=tf.nn.relu, name=self._policy_namescope)
+        fc1 = tf.layers.dense(self._policy_states, 400, activation=tf.nn.relu, name=self._policy_namescope + "0")
+        fc2 = tf.layers.dense(fc1, 400, activation=tf.nn.relu, name=self._policy_namescope + "1")
+        fc3 = tf.layers.dense(fc2, 400, activation=tf.nn.relu, name=self._policy_namescope + "2")
+        fc4 = tf.layers.dense(fc3, 400, activation=tf.nn.relu, name=self._policy_namescope + "3")
+        fc5 = tf.layers.dense(fc4, 400, activation=tf.nn.relu, name=self._policy_namescope + "4")
         self._policy_logits = tf.layers.dense(fc5, self._num_actions)
 
         # parameters
@@ -59,11 +59,11 @@ class TwoModels:
         #self._target_q_s_a = tf.placeholder(shape=[None, self._num_actions], dtype=tf.float32)
 
         # list of nn layers
-        fc1 = tf.layers.dense(self._target_states, 400, activation=tf.nn.relu, name=self._target_namescope)
-        fc2 = tf.layers.dense(fc1, 400, activation=tf.nn.relu, name=self._target_namescope)
-        fc3 = tf.layers.dense(fc2, 400, activation=tf.nn.relu, name=self._target_namescope)
-        fc4 = tf.layers.dense(fc3, 400, activation=tf.nn.relu, name=self._target_namescope)
-        fc5 = tf.layers.dense(fc4, 400, activation=tf.nn.relu, name=self._target_namescope)
+        fc1 = tf.layers.dense(self._target_states, 400, activation=tf.nn.relu, name=self._target_namescope + "0")
+        fc2 = tf.layers.dense(fc1, 400, activation=tf.nn.relu, name=self._target_namescope + "1")
+        fc3 = tf.layers.dense(fc2, 400, activation=tf.nn.relu, name=self._target_namescope + "2")
+        fc4 = tf.layers.dense(fc3, 400, activation=tf.nn.relu, name=self._target_namescope + "3")
+        fc5 = tf.layers.dense(fc4, 400, activation=tf.nn.relu, name=self._target_namescope + "4")
         self._target_logits = tf.layers.dense(fc5, self._num_actions)
 
         # Todo: probably don't need this becaue we are not training the network
@@ -90,7 +90,7 @@ class TwoModels:
     # Todo: implement copying weights from policy to target
     def copy_weights_to_target(self):
         for (new, old) in zip(tf.trainable_variables(self._policy_namescope),
-                              tf.trainable_vars(self._target_namescope)):
+                              tf.trainable_variables(self._target_namescope)):
             tf.assign(new, old)
 
     @property

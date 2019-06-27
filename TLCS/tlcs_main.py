@@ -20,7 +20,7 @@ import timeit
 from SimRunner import SimRunner
 from TrafficGenerator import TrafficGenerator
 from Memory import Memory
-from TwoModels import TwoModels
+from Model import TwoModels
 
 # sumo things - we need to import python modules from the $SUMO_HOME/tools directory
 if 'SUMO_HOME' in os.environ:
@@ -92,6 +92,7 @@ if __name__ == "__main__":
     # --- TRAINING OPTIONS ---
     gui = False
     total_episodes = 100
+    print("totla episodes = " + str(total_episodes))
     gamma = 0.75
     batch_size = 100
     memory_size = 50000
@@ -137,7 +138,7 @@ if __name__ == "__main__":
             episode += 1
 
             # update target network
-            if episode % model.target_update_step():
+            if episode % model.target_update_step == 0:
                 model.copy_weights_to_target()
 
         os.makedirs(os.path.dirname(path), exist_ok=True)
