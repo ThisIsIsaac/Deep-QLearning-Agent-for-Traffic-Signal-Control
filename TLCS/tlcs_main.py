@@ -7,6 +7,7 @@ from __future__ import print_function
 import os
 import sys
 
+# append path to "sumo/tools"
 sys.path.insert(0, '/usr/share/sumo/tools')
 from sumolib import checkBinary
 import matplotlib.pyplot as plt
@@ -19,7 +20,7 @@ import timeit
 from SimRunner import SimRunner
 from TrafficGenerator import TrafficGenerator
 from Memory import Memory
-from Model import Model
+from TwoModels import TwoModels
 
 # sumo things - we need to import python modules from the $SUMO_HOME/tools directory
 if 'SUMO_HOME' in os.environ:
@@ -111,7 +112,8 @@ if __name__ == "__main__":
         sumoBinary = checkBinary('sumo-gui')
 
     # initializations
-    model = Model(num_states, num_actions, batch_size)
+    model = TwoModels(num_states, num_actions, batch_size)
+
     memory = Memory(memory_size)
     traffic_gen = TrafficGenerator(max_steps)
     sumoCmd = [sumoBinary, "-c", "intersection/tlcs_config_train.sumocfg", "--no-step-log", "true", "--waiting-time-memory", str(max_steps)]
@@ -120,7 +122,9 @@ if __name__ == "__main__":
     with tf.Session() as sess:
         print("PATH:", path)
         print("----- Start time:", datetime.datetime.now())
+
         sess.run(model.var_init)
+
         sim_runner = SimRunner(sess, model, memory, traffic_gen, total_episodes, gamma, max_steps, green_duration, yellow_duration, sumoCmd)
         episode = 0
 
@@ -131,6 +135,10 @@ if __name__ == "__main__":
             stop = timeit.default_timer()
             print('Time: ', round(stop - start, 1))
             episode += 1
+
+            # update target network
+            if episode % model.target_update_step():
+                model.copy_weights_to_target()
 
         os.makedirs(os.path.dirname(path), exist_ok=True)
         saver.save(sess, path + "my_tlcs_model.ckpt") 

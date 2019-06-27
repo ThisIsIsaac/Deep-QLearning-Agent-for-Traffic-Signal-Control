@@ -118,7 +118,7 @@ class SimRunner:
         if random.random() < self._eps:
             return random.randint(0, self._model.num_actions - 1) # random action
         else:
-            return np.argmax(self._model.predict_one(state, self._sess)) # the best action given the current state
+            return np.argmax(self._model.policy_predict_one(state, self._sess)) # the best action given the current state
 
     # SET IN SUMO THE CORRECT YELLOW PHASE
     def _set_yellow_phase(self, old_action):
@@ -216,8 +216,8 @@ class SimRunner:
             next_states = np.array([val[3] for val in batch])  # extract next states from the batch
 
             # prediction
-            q_s_a = self._model.predict_batch(states, self._sess)  # predict Q(state), for every sample
-            q_s_a_d = self._model.predict_batch(next_states, self._sess)  # predict Q(next_state), for every sample
+            q_s_a = self._model.policy_predict_batch(states, self._sess)  # predict Q_policy(state), for every sample
+            q_s_a_d = self._model.target_predict_batch(next_states, self._sess)  # predict Q_target(next_state), for every sample
 
             # setup training arrays
             x = np.zeros((len(batch), self._model.num_states))
@@ -226,7 +226,7 @@ class SimRunner:
             for i, b in enumerate(batch):
                 state, action, reward, next_state = b[0], b[1], b[2], b[3]  # extract data from one sample
                 current_q = q_s_a[i]  # get the Q(state) predicted before
-                current_q[action] = reward + self._gamma * np.amax(q_s_a_d[i])  # update Q(state, action)
+                current_q[action] = reward + self._gamma * np.amax(q_s_a_d[i])  # upsdate Q(state, action)
                 x[i] = state
                 y[i] = current_q  # Q(state) that includes the updated action value
 
