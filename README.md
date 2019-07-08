@@ -78,6 +78,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 |implementation|100 epochs|200 epochs|
 |---|---|---|
-|baseline|~ -5000|-6000 ~ -5000|
-|separate target network|~ -3782|   |
-|separate target network + DDQN|   |   |
+|baseline (incorrect DQN)|~ -5000|-6000 ~ -5000|
+|separate target network (DQN)|~ -3782|   |
+|DDQN|   |   |
+|DDQN + batch action|   |   |
