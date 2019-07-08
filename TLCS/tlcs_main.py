@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     # --- TRAINING OPTIONS ---
     gui = False
-    total_episodes = 100
+    total_episodes = 200
     print("totla episodes = " + str(total_episodes))
     gamma = 0.75
     batch_size = 100

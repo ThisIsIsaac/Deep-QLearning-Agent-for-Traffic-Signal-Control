@@ -216,8 +216,9 @@ class SimRunner:
             next_states = np.array([val[3] for val in batch])  # extract next states from the batch
 
             # prediction
-            q_s_a = self._model.policy_predict_batch(states, self._sess)  # predict Q_policy(state), for every sample
-            q_s_a_d = self._model.target_predict_batch(next_states, self._sess)  # predict Q_target(next_state), for every sample
+            batch_online_current_action_value = self._model.policy_predict_batch(states, self._sess)  # predict Q_policy(state), for every sample
+            batch_online_next_action_value = self._model.policy_predict_batch(next_states, self._sess)
+            batch_target_next_action_value = self._model.target_predict_batch(next_states, self._sess)  # predict Q_target(next_state), for every sample
 
             # setup training arrays
             x = np.zeros((len(batch), self._model.num_states))
@@ -225,8 +226,8 @@ class SimRunner:
 
             for i, b in enumerate(batch):
                 state, action, reward, next_state = b[0], b[1], b[2], b[3]  # extract data from one sample
-                current_q = q_s_a[i]  # get the Q(state) predicted before
-                current_q[action] = reward + self._gamma * np.amax(q_s_a_d[i])  # upsdate Q(state, action)
+                current_q = batch_online_current_action_value[i]  # get the Q(state) predicted before
+                current_q[action] = reward + self._gamma * batch_target_next_action_value[np.argmax(batch_online_next_action_value[i])] # update Q(state, action)
                 x[i] = state
                 y[i] = current_q  # Q(state) that includes the updated action value
 

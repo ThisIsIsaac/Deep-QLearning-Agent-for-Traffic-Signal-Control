@@ -74,3 +74,10 @@ If you need further information, I suggest you to look at my master thesis [here
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
+## Results
+
+|implementation|100 epochs|200 epochs|
+|---|---|---|
+|baseline|~ -5000|-6000 ~ -5000|
+|separate target network|~ -3782|   |
+|separate target network + DDQN|   |   |
