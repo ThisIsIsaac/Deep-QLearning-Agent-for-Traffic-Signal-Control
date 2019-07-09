@@ -89,18 +89,25 @@ if __name__ == "__main__":
     parser.add_argument("--episode", "-e", type=int, default=100, nargs=1, dest="episode", help="number of episodes to train")
     args = parser.parse_args()
 
-    print(args.episode)
-    print(args.path)
-
     # --- TRAINING OPTIONS ---
     gui = False
-    total_episodes = args.episode
-    print("totla episodes = " + str(total_episodes))
+
+    if isinstance(args.episode, list):
+        total_episodes = args.episode[0]
+    else:
+        total_episodes = args.episode
+
+    if isinstance(args.path, list):
+        path = "./model/" + args.path[0] + "/"
+    else:
+        path = "./model/" + args.path + "/"
+
     gamma = 0.75
     batch_size = 100
     memory_size = 50000
-    path = "./model/" + args.path[0]
+
     print("saving model to path = " + path)
+    print("totla episodes = " + str(total_episodes))
 
     # ----------------------
 
