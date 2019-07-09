@@ -80,5 +80,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 |---|---|---|
 |baseline (incorrect DQN)|~ -5000|-6000 ~ -5000|
 |separate target network (DQN)|~ -3782|   |
-|DDQN|   |   |
+|DDQN|~ -3207|   |
 |DDQN + batch action|   |   |

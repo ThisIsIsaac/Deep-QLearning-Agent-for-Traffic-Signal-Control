@@ -227,7 +227,7 @@ class SimRunner:
             for i, b in enumerate(batch):
                 state, action, reward, next_state = b[0], b[1], b[2], b[3]  # extract data from one sample
                 current_q = batch_online_current_action_value[i]  # get the Q(state) predicted before
-                current_q[action] = reward + self._gamma * batch_target_next_action_value[np.argmax(batch_online_next_action_value[i])] # update Q(state, action)
+                current_q[action] = reward + self._gamma * batch_target_next_action_value[i][np.argmax(batch_online_next_action_value[i])] # update Q(state, action)
                 x[i] = state
                 y[i] = current_q  # Q(state) that includes the updated action value
 
