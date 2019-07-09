@@ -1,6 +1,8 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'  # kill warning about tensorflow
 import tensorflow as tf
+import matplotlib
+import matplotlib.pyplot as plt
 
 class TwoModels:
     def __init__(self, num_states, num_actions, batch_size):
@@ -32,6 +34,11 @@ class TwoModels:
         self._define_policy_model()
         self._define_target_model()
         self._var_init = tf.global_variables_initializer()
+
+        # data used to plot on matplotlib
+        self.episodes = [] # a list of episodes that recorded rewards and epsilons
+        self.rewards = []
+        self.epsilons = []
 
     # policy network
     def _define_policy_model(self):
@@ -103,3 +110,12 @@ class TwoModels:
     @property
     def target_update_step(self):
         return self._target_update_step
+
+    def plot(self):
+        graph, ax = plt.subplots()
+        ax.plot(self.episodes, self.rewards)
+        ax.set(xlabel="episodes", ylabel="cumulative reward", title="Reward over episodes")
+        ax.grid()
+        graph.savefig("reward_over_episodes.png")
+        plt.show()
+

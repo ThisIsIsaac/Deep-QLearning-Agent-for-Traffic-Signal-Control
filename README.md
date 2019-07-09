@@ -4,12 +4,22 @@ A framework where a deep Q-Learning Reinforcement Learning agent tries to choose
 
 I have uploaded this here in order to help anyone that is searching for a good starter point for deep reinforcement learning with SUMO. This code is extracted from my master thesis and it represents a simplified version of the code used for my thesis work. I hope you can find this repository useful for your project.
 
+## Results
+
+|implementation|100 epochs|200 epochs|
+|---|---|---|
+|baseline (incorrect DQN)|~ -5000|-6000 ~ -5000|
+|separate target network (DQN)|~ -3782|   |
+|DDQN|~ -3207|   |
+|DDQN + batch action|   |   |
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. In my opinion, these are the easiest steps to follow in order to be able to run the algorithm starting from scratch. A computer with an NVIDA GPU is strongly recommended.
 
 1. Download Anaconda ([official site](https://www.anaconda.com/distribution/#download-section)) and install.
-2. Download SUMO ([official site](https://www.dlr.de/ts/en/desktopdefault.aspx/tabid-9883/16931_read-41000/)) and install.
+2. Download SUMO ([official site](https://www.dlr.de/ts/en/desktopdefault.as
+px/tabid-9883/16931_read-41000/)) and install.
 3. Follow [this](https://towardsdatascience.com/tensorflow-gpu-installation-made-easy-use-conda-instead-of-pip-52e5249374bc) short guide in order to install tensorflow-gpu correctly and problem-free. Basically the guide tells you to open Anaconda Prompt, or any terminal, and type the following commands:
 ```
 conda create --name tf_gpu
@@ -73,12 +83,3 @@ If you need further information, I suggest you to look at my master thesis [here
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Results
-
-|implementation|100 epochs|200 epochs|
-|---|---|---|
-|baseline (incorrect DQN)|~ -5000|-6000 ~ -5000|
-|separate target network (DQN)|~ -3782|   |
-|DDQN|~ -3207|   |
-|DDQN + batch action|   |   |

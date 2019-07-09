@@ -6,6 +6,7 @@ from __future__ import print_function
 
 import os
 import sys
+import argparse
 
 # append path to "sumo/tools"
 sys.path.insert(0, '/usr/share/sumo/tools')
@@ -13,8 +14,6 @@ from sumolib import checkBinary
 import matplotlib.pyplot as plt
 import datetime
 import tensorflow as tf
-import numpy as np
-import math
 import timeit
 
 from SimRunner import SimRunner
@@ -31,7 +30,6 @@ else:
 
 # PLOT AND SAVE THE STATS ABOUT THE SESSION
 def save_graphs(sim_runner, total_episodes, plot_path):
-
     plt.rcParams.update({'font.size': 24})  # set bigger font size
 
     # reward
@@ -66,7 +64,7 @@ def save_graphs(sim_runner, total_episodes, plot_path):
     plt.close("all")
     with open(plot_path + 'delay_data.txt', "w") as file:
         for item in data:
-                file.write("%s\n" % item)
+            file.write("%s\n" % item)
 
     # average number of cars in queue
     data = sim_runner.avg_intersection_queue_store
@@ -83,20 +81,27 @@ def save_graphs(sim_runner, total_episodes, plot_path):
     plt.close("all")
     with open(plot_path + 'queue_data.txt', "w") as file:
         for item in data:
-                file.write("%s\n" % item)
-
-
+            file.write("%s\n" % item)
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", "-p", type=str, default="model", dest="path", nargs=1, help="path to save the the results. Saved under './model/'")
+    parser.add_argument("--episode", "-e", type=int, default=100, nargs=1, dest="episode", help="number of episodes to train")
+    args = parser.parse_args()
+
+    print(args.episode)
+    print(args.path)
 
     # --- TRAINING OPTIONS ---
     gui = False
-    total_episodes = 100
+    total_episodes = args.episode
     print("totla episodes = " + str(total_episodes))
     gamma = 0.75
     batch_size = 100
     memory_size = 50000
-    path = "./model/model_1_5x400_100e_075g/"  # nn = 5x400, episodes = 300, gamma = 0.75
+    path = "./model/" + args.path[0]
+    print("saving model to path = " + path)
+
     # ----------------------
 
     # attributes of the agent

@@ -85,6 +85,9 @@ class SimRunner:
 
         self._save_stats(tot_neg_reward)
         print("Total reward: {}, Eps: {}".format(tot_neg_reward, self._eps))
+        self._model.rewards.append(tot_neg_reward)
+        self._model.epsilons.append(self._eps)
+        self._model.episodes.append(episode)
         traci.close()
 
     # HANDLE THE CORRECT NUMBER OF STEPS TO SIMULATE
